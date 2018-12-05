@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Circus_Trein
 {
-    public class Class1
+    public class Train
     {
+        private List<Wagon> wagonList = new List<Wagon>();
+
+        public Train(List<Wagon> _wagonList) { }
     }
 }
