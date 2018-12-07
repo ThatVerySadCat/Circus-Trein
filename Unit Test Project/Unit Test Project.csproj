@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimalGenerator.cs" />
+    <Compile Include="AnimalTests.cs" />
     <Compile Include="PlatformManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

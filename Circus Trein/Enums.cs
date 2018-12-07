@@ -11,11 +11,11 @@ namespace Circus_Trein
         herbivore = 0,
         carnivore = 1
     }
-
+    
     public enum Size : int
     {
-        small = 0,
-        medium = 1,
-        large = 2
+        small = 1,
+        medium = 3,
+        large = 5
     }
 }
