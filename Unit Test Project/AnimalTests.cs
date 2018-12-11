@@ -14,8 +14,8 @@ namespace Unit_Test_Project
         [TestMethod()]
         public void CompareToTrueTest()
         {
-            Animal animal1 = new Animal(Diet.herbivore, Size.large);
-            Animal animal2 = new Animal(Diet.herbivore, Size.large);
+            Animal animal1 = new Animal(Diet.Herbivore, Size.Large);
+            Animal animal2 = new Animal(Diet.Herbivore, Size.Large);
 
             bool expected = true;
             bool actual = animal1.CompareTo(animal2) == 0;
@@ -26,8 +26,8 @@ namespace Unit_Test_Project
         [TestMethod]
         public void CompareToFalseTest()
         {
-            Animal animal1 = new Animal(Diet.carnivore, Size.large);
-            Animal animal2 = new Animal(Diet.herbivore, Size.large);
+            Animal animal1 = new Animal(Diet.Carnivore, Size.Large);
+            Animal animal2 = new Animal(Diet.Herbivore, Size.Large);
 
             bool expected = false;
             bool actual = animal1.CompareTo(animal2) == 1;
@@ -38,29 +38,23 @@ namespace Unit_Test_Project
         [TestMethod]
         public void SortAnimalListTest()
         {
-            AnimalGenerator generator = new AnimalGenerator((int)DateTime.Now.Ticks);
-            List<Animal> animalList = new List<Animal>(50);
+            AnimalGenerator generator = new AnimalGenerator();
+            List<Animal> animals = generator.GetRandomAnimals(50);
 
-            for(int i = 0; i < 50; i++)
-            {
-                animalList.Add(generator.GetRandomAnimal());
-            }
+            animals.Sort();
 
-            animalList.Sort();
-            animalList.Reverse();
-
-            int lastAnimalSize = (int)animalList[0].Size;
+            int largestAnimalSize = (int)animals[0].Size;
             bool actual = true;
-            foreach(Animal animal in animalList)
+            foreach(Animal animal in animals)
             {
                 int currentAnimalSize = (int)animal.Size;
-                if(currentAnimalSize > lastAnimalSize)
+                if(currentAnimalSize > largestAnimalSize)
                 {
                     actual = false;
                     break;
                 }
 
-                lastAnimalSize = currentAnimalSize;
+                largestAnimalSize = currentAnimalSize;
             }
 
             Assert.AreEqual(true, actual);

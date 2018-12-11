@@ -13,50 +13,36 @@ namespace Unit_Test_Project
     public class TrainTests
     {
         [TestMethod]
-        public void TestAddAnimalsToWagons()
+        public void AddAnimalCarnivoreTest()
         {
-            AnimalGenerator generator = new AnimalGenerator((int)DateTime.Now.Ticks);
-            PlatformManager manager = new PlatformManager();
+            Animal carnivore = new Animal(Diet.Carnivore, Size.Small);
+            Train train = new Train();
 
-            List<Animal> animalList = new List<Animal>(50);
-            for (int i = 0; i < 50; i++)
-            {
-                animalList.Add(generator.GetRandomAnimal());
-            }
-            manager.AddAnimalList(animalList);
+            train.AddAnimal(carnivore);
 
-            List<List<Animal>> animalGroupList = manager.GetAnimalGroups();
+            Assert.AreEqual(1, train.CarnivoreCount);
+        }
 
-            Train train = new Train(animalGroupList.Count);
-            foreach (List<Animal> animalGroup in animalGroupList)
-            {
-                train.AddAnimalGroupToWagon(animalGroup);
-            }
+        [TestMethod]
+        public void AddAnimalHerbivoreTest()
+        {
+            Animal herbivore = new Animal(Diet.Herbivore, Size.Small);
+            Train train = new Train();
 
-            bool actual = true;
-            for (int i = 0; i < animalGroupList.Count; i++)
-            {
-                ReadOnlyCollection<Animal> wagonAnimalList = train.GetAnimalListFromWagon(i);
-                List<Animal> animalGroup = animalGroupList[i];
+            train.AddAnimal(herbivore);
 
-                bool equal = true;
-                for (int animalIndex = 0; animalIndex < animalGroup.Count - 1; animalIndex++)
-                {
-                    if (!animalGroup[animalIndex].Equals(wagonAnimalList[animalIndex]))
-                    {
-                        equal = false;
-                        break;
-                    }
-                }
+            Assert.AreEqual(1, train.HerbivoreCount);
+        }
 
-                if (!equal)
-                {
-                    actual = false;
-                    break;
-                }
-            }
+        [TestMethod]
+        public void AddPlaceAnimalsTest()
+        {
+            AnimalGenerator generator = new AnimalGenerator();
+            List<Animal> animals = generator.GetRandomAnimals(50);
+            Train train = new Train();
 
-            Assert.AreEqual(true, actual);
+            train.AddAnimals(animals);
+            train.PlaceAnimals();
         }
     }
 }

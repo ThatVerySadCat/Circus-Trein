@@ -16,12 +16,11 @@ namespace Unit_Test_Project
         Random rng;
 
         /// <summary>
-        /// Instantiates a Random object with the given seed.
+        /// Instantiates a Random object with the current date time ticks as the seed.
         /// </summary>
-        /// <param name="seed">The seed to use for the random number generation.</param>
-        public AnimalGenerator(int seed)
+        public AnimalGenerator()
         {
-            rng = new Random(seed);
+            rng = new Random((int)DateTime.Now.Ticks);
         }
 
         /// <summary>
@@ -38,6 +37,22 @@ namespace Unit_Test_Project
             }
 
             return new Animal((Diet)animalDiet, (Size)animalSize);
+        }
+
+        /// <summary>
+        /// Returns a list of count amount of randomly generated animals.
+        /// </summary>
+        /// <param name="count">The amount of animals to generate.</param>
+        /// <returns></returns>
+        public List<Animal> GetRandomAnimals(int count)
+        {
+            List<Animal> returnAnimals = new List<Animal>(count);
+            for(int i = 0; i < count; i++)
+            {
+                returnAnimals.Add(GetRandomAnimal());
+            }
+
+            return returnAnimals;
         }
     }
 }

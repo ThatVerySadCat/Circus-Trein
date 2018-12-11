@@ -10,48 +10,131 @@ namespace Circus_Trein
     public class Train
     {
         /// <summary>
-        /// A list containing the wagons that are a part of the train.
+        /// The amount of carnivores that have been added to the train.
         /// </summary>
-        private List<Wagon> wagonList = new List<Wagon>();
-
-        /// <summary>
-        /// Instantiate the Train object with the given amount of wagons.
-        /// </summary>
-        /// <param name="wagonCount">The amount of wagons to create.</param>
-        public Train(int wagonCount)
+        public int CarnivoreCount
         {
-            for(int i = 0; i < wagonCount; i++)
+            get
             {
-                wagonList.Add(new Wagon());
+                return carnivores.Count;
+            }
+        }
+        /// <summary>
+        /// The amount of herbivores that have been added to the train.
+        /// </summary>
+        public int HerbivoreCount
+        {
+            get
+            {
+                return herbivores.Count;
             }
         }
 
         /// <summary>
-        /// Returns a ReadOnlyCollection containing the animals found in the wagon with the given wagonIndex.
+        /// A list containing all the carnivores added to the train thus far.
         /// </summary>
-        /// <param name="wagonIndex">The position of the wagon in the wagon list to access.</param>
-        /// <returns>A ReadOnlyCollection containing the animals found in the desired wagon.</returns>
-        public ReadOnlyCollection<Animal> GetAnimalListFromWagon(int wagonIndex)
+        private List<Animal> carnivores = new List<Animal>();
+        /// <summary>
+        /// A list containing all of the herbivores added to the train thus far.
+        /// </summary>
+        private List<Animal> herbivores = new List<Animal>();
+        /// <summary>
+        /// A list containing the wagons that are a part of the train.
+        /// </summary>
+        private List<Wagon> wagons = new List<Wagon>();
+
+        public Train() { }
+        
+        /// <summary>
+        /// Adds the given animal to the correct list based on its diet.
+        /// </summary>
+        /// <param name="animal">The animal to add.</param>
+        public void AddAnimal(Animal animal)
         {
-            return wagonList[wagonIndex].AnimalList;
+            if(animal.Diet == Diet.Carnivore)
+            {
+                carnivores.Add(animal);
+            }
+            else if(animal.Diet == Diet.Herbivore)
+            {
+                herbivores.Add(animal);
+            }
         }
 
         /// <summary>
-        /// Adds the given group of animals to the first wagon containing no animals.
+        /// Adds the animals in the given list to the correct list based on its diet.
         /// </summary>
-        /// <param name="animalGroup">The group of animals to add.</param>
-        public void AddAnimalGroupToWagon(List<Animal> animalGroup)
+        /// <param name="animals">The list of animals to add.</param>
+        public void AddAnimals(List<Animal> animals)
         {
-            foreach(Wagon wagon in wagonList)
+            foreach(Animal animal in animals)
             {
-                if(!wagon.ContainsAnimals)
-                {
-                    foreach(Animal animal in animalGroup)
-                    {
-                        wagon.AddAnimal(animal);
-                    }
+                AddAnimal(animal);
+            }
+        }
 
-                    break;
+        /// <summary>
+        /// Places the animals that are contained within the train in wagons.
+        /// </summary>
+        public void PlaceAnimals()
+        {
+            PlaceCarnivores();
+            PlaceHerbivores();
+        }
+
+        /// <summary>
+        /// Places the carnivores in wagons.
+        /// </summary>
+        private void PlaceCarnivores()
+        {
+            carnivores.Sort();
+
+            wagons.Add(new Wagon());
+            foreach (Animal carnivore in carnivores)
+            {
+                Wagon newestWagon = wagons[wagons.Count - 1];
+
+                if (newestWagon.CanAnimalBeAdded(carnivore))
+                {
+                    newestWagon.AddAnimal(carnivore);
+                }
+                else
+                {
+                    newestWagon = new Wagon();
+                    wagons.Add(newestWagon);
+
+                    newestWagon.AddAnimal(carnivore);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Places the herbivores in wagons.
+        /// </summary>
+        private void PlaceHerbivores()
+        {
+            herbivores.Sort();
+
+            foreach (Animal herbivore in herbivores)
+            {
+                bool animalWasPlaced = false;
+                for (int i = 0; i < wagons.Count; i++)
+                {
+                    Wagon currentWagon = wagons[i];
+                    if (currentWagon.CanAnimalBeAdded(herbivore))
+                    {
+                        currentWagon.AddAnimal(herbivore);
+                        animalWasPlaced = true;
+
+                        break;
+                    }
+                }
+
+                if (!animalWasPlaced)
+                {
+                    Wagon newWagon = new Wagon();
+                    wagons.Add(newWagon);
+                    newWagon.AddAnimal(herbivore);
                 }
             }
         }

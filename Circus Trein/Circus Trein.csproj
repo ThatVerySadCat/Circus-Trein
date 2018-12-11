@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animal.cs" />
-    <Compile Include="PlatformManager.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="IDPool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

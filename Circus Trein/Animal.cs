@@ -57,7 +57,7 @@ namespace Circus_Trein
                 return 0;
             }
             
-            return this.Size.CompareTo(compareAnimal.Size);
+            return this.Size.CompareTo(compareAnimal.Size) * -1;
         }
     }
 }

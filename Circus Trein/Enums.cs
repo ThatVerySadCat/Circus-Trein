@@ -8,14 +8,14 @@ namespace Circus_Trein
 {
     public enum Diet : int
     {
-        herbivore = 0,
-        carnivore = 1
+        Herbivore = 0,
+        Carnivore = 1
     }
     
     public enum Size : int
     {
-        small = 1,
-        medium = 3,
-        large = 5
+        Small = 1,
+        Medium = 3,
+        Large = 5
     }
 }
